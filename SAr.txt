@@ -1,0 +1,49 @@
+To extract features from LISS 3 images and label them in a map, you can follow these steps:
+
+1. Preprocessing: Before feature extraction, perform necessary preprocessing like radiometric correction and geometric correction of the image.
+
+2. Image segmentation: Segment the image into meaningful objects using methods like region growing, watershed segmentation, or recursive merging.
+
+3. Feature extraction: Extract the features of interest from the segmented objects. Possible approaches are:
+   - Using spectral information: Compute spectral indices like NDVI, NDWI, or NDBI from the different bands of the LISS 3 image.
+   - Using texture information: Calculate texture features like entropy, contrast, or homogeneity using methods like gray-level co-occurrence matrix (GLCM) or gray-level run-length matrix (GLRLM).
+   - Using contextual information: Analyze the contextual information of the objects like size, shape, spatial distribution, or adjacency to other objects.
+
+4. Classification: Assign labels to the extracted features using a supervised or unsupervised classification method. Possible methods are:
+   - Supervised classification: Use training samples with known class labels to train a classifier like Maximum Likelihood, Support Vector Machines (SVM), or Random Forest.
+   - Unsupervised classification: Cluster the extracted features into natural groups using methods like K-means, Hierarchical Agglomerative Clustering (HAC), or Fuzzy C-Means (FCM).
+
+5. Mapping: Finally, create a map where the labeled features are plotted with their corresponding class symbols or colors.
+
+Here is a sample Python code to perform featxure extraction and classification using the above steps:
+
+```python
+import rasterio
+import numpy as np
+from skimage import morphology, filters
+from sklearn.ensemble import RandomForestClassifier
+
+# Load the LISS 3 image using rasterio
+image_file = 'liss3_image.tif'
+with rasterio.open(image_file) as src:
+    liss3 = src.read()
+   
+# Perform radiometric and geometric correction
+liss3 = apply_corrections(liss3)
+
+# Image segmentation
+segments = perform_segmentation(liss3)
+
+# Feature extraction
+ndvi = compute_ndvi(liss3)
+entropy = compute_entropy(segments)
+
+# Classification
+X = np.column_stack((ndvi.ravel(), entropy.ravel()))
+y = perform_classification(X, liss3)
+
+# Mapping
+create_map(segments, y)
+```
+
+Note that the functions `apply_corrections`, `perform_segmentation`, `compute_ndvi`, `compute_entropy`, `perform_classification`, and `create_map` should be defined based on the specific methods chosen for the task.
